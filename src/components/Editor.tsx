@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import useCodeMirror from "./use-codemirror";
+import { useEditMode, Modes } from "../store";
 
 interface Props {
   initialDoc: string;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const Editor: React.FC<Props> = (props) => {
+  const mode = useEditMode((state) => state.mode);
   const { onChange, initialDoc } = props;
   const handleChange = useCallback(
     (state) => onChange(state.doc.toString()),
@@ -22,7 +24,12 @@ const Editor: React.FC<Props> = (props) => {
     }
   }, [editorView]);
 
-  return <div className="w-1/2" ref={refContainer}></div>;
+  return (
+    <div
+      className={`w-1/2 flex-grow ${mode === Modes.View ? "hidden" : "block"}`}
+      ref={refContainer}
+    ></div>
+  );
 };
 
 export default Editor;
