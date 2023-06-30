@@ -18,12 +18,17 @@ const Preview: React.FC<Props> = (props) => {
   const darkMode = useDarkMode((state) => state.darkMode);
 
   const { doc } = props;
+  const modeStyle = () => {
+    if (mode === Modes.View) {
+      return "block w-full overflow-auto p-4 prose prose-gruvbox dark:prose-invert";
+    } else if (mode === Modes.Split) {
+      return "block w-1/2 overflow-auto p-2 prose prose-gruvbox dark:prose-invert";
+    }
+    return "hidden";
+  };
+
   return (
-    <div
-      className={`w-1/2 overflow-auto p-2 prose prose-gruvbox dark:prose-invert flex-grow ${
-        mode === Modes.Edit ? "hidden" : "block"
-      }`}
-    >
+    <div className={modeStyle()}>
       <ReactMarkdown
         children={doc}
         remarkPlugins={[remarkGfm]}

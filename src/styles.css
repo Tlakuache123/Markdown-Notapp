@@ -4,6 +4,18 @@
 
 @layer base {
     html, body {
-        @apply bg-gvb-white dark:bg-gvb-black
+        @apply bg-gvb-white dark:bg-gvb-black h-full
+    }
+
+    ::-webkit-scrollbar {
+        @apply w-2
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-gvb-black
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gvb-gray-400 hover:bg-gvb-gray-300
     }
 }

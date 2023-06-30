@@ -19,17 +19,21 @@ const Editor: React.FC<Props> = (props) => {
     onChange: handleChange,
   });
 
+  const modeStyle = () => {
+    if (mode === Modes.Edit) {
+      return "block w-full overflow-auto";
+    } else if (mode === Modes.Split) {
+      return "block w-1/2 overflow-auto";
+    }
+    return "hidden";
+  };
+
   useEffect(() => {
     if (editorView) {
     }
   }, [editorView]);
 
-  return (
-    <div
-      className={`w-1/2 flex-grow ${mode === Modes.View ? "hidden" : "block"}`}
-      ref={refContainer}
-    ></div>
-  );
+  return <div className={modeStyle()} ref={refContainer}></div>;
 };
 
 export default Editor;

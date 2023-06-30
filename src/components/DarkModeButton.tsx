@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDarkMode } from "../store";
+import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 
 const DarkModeButton: React.FC = () => {
   const [darkMode, switchDarkMode] = useDarkMode((state) => [
@@ -20,10 +21,14 @@ const DarkModeButton: React.FC = () => {
   return (
     <div>
       <button
-        className="bg-[#504945] rounded m-1 px-2 hover:bg-[#665c54]"
+        className="bg-[#504945] rounded m-1 px-2 py-0.5 hover:bg-[#665c54]"
         onClick={handleDarkMode}
       >
-        {darkMode ? "Dark" : "Light"}
+        {darkMode === "light" ? (
+          <SunIcon className="w-4 h-4" />
+        ) : (
+          <MoonIcon className="w-4 h-4" />
+        )}
       </button>
     </div>
   );

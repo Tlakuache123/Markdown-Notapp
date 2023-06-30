@@ -3,9 +3,11 @@ import Editor from "./components/Editor";
 import Preview from "./components/Preview";
 import Bar from "./components/Bar";
 import { invoke } from "@tauri-apps/api/tauri";
+import { useEditMode, Modes } from "./store";
 
 const App: React.FC = () => {
   const [doc, setDoc] = useState<string>("");
+  const mode = useEditMode((state) => state.mode);
   const handleDocChange = useCallback((newDoc) => {
     setDoc(newDoc);
   }, []);
@@ -16,13 +18,13 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen">
-      <div>
-        <Bar />
-        <div className="flex h-full">
-          <Editor onChange={handleDocChange} initialDoc={doc} />
-          <Preview doc={doc} />
-        </div>
+    <div className="flex flex-col h-full">
+      <Bar />
+      <div
+        className={`flex grow ${mode === Modes.View ? "justify-center" : ""}`}
+      >
+        <Editor onChange={handleDocChange} initialDoc={doc} />
+        <Preview doc={doc} />
       </div>
     </div>
   );
