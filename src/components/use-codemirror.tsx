@@ -19,8 +19,10 @@ import { basicSetup } from "codemirror";
 import { languages } from "@codemirror/language-data";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
-import { gruvboxDark } from "cm6-theme-gruvbox-dark";
+import { gruvboxLight } from "cm6-theme-gruvbox-light";
+import { useDarkMode } from "../store";
 import type React from "react";
+import { gruvboxDark } from "cm6-theme-gruvbox-dark";
 
 interface Props {
   inititalDoc: string;
@@ -55,9 +57,12 @@ const mySyntaxHighlighting = HighlightStyle.define([
 const useCodeMirror = <T extends Element>(
   props: Props
 ): [React.MutableRefObject<T | null>, EditorView?] => {
+  const setView = useDarkMode((state) => state.setView);
   const refContainer = useRef<T>(null);
   const [editorView, setEditorView] = useState<EditorView>();
   const { onChange } = props;
+
+  let editorTheme = new Compartment();
 
   useEffect(() => {
     if (!refContainer.current) return;
@@ -79,7 +84,7 @@ const useCodeMirror = <T extends Element>(
         }),
         transparentTheme,
         syntaxHighlighting(mySyntaxHighlighting),
-        gruvboxDark,
+        editorTheme.of(gruvboxLight),
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           if (update.changes) {
@@ -93,7 +98,9 @@ const useCodeMirror = <T extends Element>(
       state: startState,
       parent: refContainer.current,
     });
+
     setEditorView(view);
+    setView(view, editorTheme);
   }, [refContainer]);
 
   return [refContainer, editorView];

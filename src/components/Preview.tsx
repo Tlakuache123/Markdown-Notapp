@@ -3,7 +3,11 @@ import remarkGfm from "remark-gfm";
 import { useEditMode, Modes } from "../store";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+  gruvboxDark,
+  gruvboxLight,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useDarkMode } from "../store";
 
 interface Props {
   doc: string;
@@ -11,10 +15,12 @@ interface Props {
 
 const Preview: React.FC<Props> = (props) => {
   const mode = useEditMode((state) => state.mode);
+  const darkMode = useDarkMode((state) => state.darkMode);
+
   const { doc } = props;
   return (
     <div
-      className={`w-1/2 overflow-auto p-2 prose prose-gruvbox flex-grow ${
+      className={`w-1/2 overflow-auto p-2 prose prose-gruvbox dark:prose-invert flex-grow ${
         mode === Modes.Edit ? "hidden" : "block"
       }`}
     >
@@ -29,7 +35,7 @@ const Preview: React.FC<Props> = (props) => {
                 {...props}
                 children={String(children).replace(/\n$/, "")}
                 language={match[1]}
-                style={gruvboxDark}
+                style={darkMode === "light" ? gruvboxLight : gruvboxDark}
                 PreTag="div"
                 customStyle={{ backgroundColor: "transparent" }}
               />
